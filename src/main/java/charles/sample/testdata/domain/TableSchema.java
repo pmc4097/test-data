@@ -28,17 +28,13 @@ public class TableSchema extends AuditingFields {
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
   private Long id;
 
-  private String schemaName;
-  private String userId;
-  @Setter
-  private LocalDateTime exportedAt;
+  @Setter @Column(nullable = false) private String schemaName;
+  @Setter @Column(nullable = false) private String userId;
 
-  private LocalDateTime createdAt;
-  private String createdBy;
-  private LocalDateTime modifiedAt;
-  private String modifiedBy;
+  @Setter private LocalDateTime exportedAt;
 
   @ToString.Exclude
+  @OrderBy("fieldOrder ASC")
   @OneToMany(mappedBy = "tableSchema", cascade = CascadeType.ALL, orphanRemoval = true)
   private final Set<SchemaField> schemaFields = new LinkedHashSet<>();
 
