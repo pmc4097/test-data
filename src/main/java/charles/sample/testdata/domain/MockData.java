@@ -28,9 +28,10 @@ public class MockData {
 
   @Setter
   @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
   private MockDataType mockDataType;
   @Setter
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "TEXT")
   private String mockDataValue;
 
 

@@ -30,7 +30,7 @@ public class SchemaField extends AuditingFields {
   private TableSchema tableSchema;
 
   @Setter
-  private @Column(nullable = false) MockDataType mockDataType;
+  private @Column(nullable = false) @Enumerated(EnumType.STRING) MockDataType mockDataType;
   @Setter
   private @Column(nullable = false) String fieldName;
   @Setter
