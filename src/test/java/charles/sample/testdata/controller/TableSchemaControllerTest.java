@@ -1,11 +1,16 @@
 package charles.sample.testdata.controller;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import charles.sample.testdata.config.SecurityConfig;
-import charles.sample.testdata.domain.MockData;
 import charles.sample.testdata.domain.constant.MockDataType;
 import charles.sample.testdata.dto.request.SchemaFieldRequest;
 import charles.sample.testdata.dto.request.TableSchemaRequest;
 import charles.sample.testdata.util.FormDataEncoder;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +19,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("[Controller] 테이블 스키마 컨트롤러 테스트")
 @Import({SecurityConfig.class, FormDataEncoder.class})
@@ -36,7 +34,7 @@ public record TableSchemaControllerTest(
     // When && Then
     mvc.perform(get("/table-schema"))
             .andExpect(status().isOk())
-            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("table-schema"));
   }
 
@@ -44,7 +42,7 @@ public record TableSchemaControllerTest(
   @Test
   void givenTableSchemaData_whenCreatingOrUpdating_thenRedirectsToTableSchemaView() throws Exception {
     // Given
-    TableSchemaRequest request =TableSchemaRequest.of(
+    TableSchemaRequest request = TableSchemaRequest.of(
         "홍길동",
         "test_schema",
         List.of(
@@ -61,6 +59,7 @@ public record TableSchemaControllerTest(
                     .with(csrf())
             )
             .andExpect(status().is3xxRedirection())
+            .andExpect(flash().attribute("tableSchemaRequest", request))
             .andExpect(redirectedUrl("/table-schema"));
   }
 
@@ -86,7 +85,7 @@ public record TableSchemaControllerTest(
                         .with(csrf())
                 )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/my-schemas"));
+                .andExpect(redirectedUrl("/table-schema/my-schemas"));
     }
 
     @DisplayName("[GET] 테이블 스키마 파일 다운로드 -> 파일 다운로드 응답 (정상)")
