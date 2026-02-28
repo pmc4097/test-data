@@ -2,8 +2,6 @@ package charles.sample.testdata.dto;
 
 import charles.sample.testdata.domain.SchemaField;
 import charles.sample.testdata.domain.constant.MockDataType;
-
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /** DTO for {@link charles.sample.testdata.domain.SchemaField} */

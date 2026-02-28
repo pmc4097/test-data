@@ -1,10 +1,9 @@
 package charles.sample.testdata.domain.constant;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @DisplayName("[Domain] 테스트 데이터 자료형 테스트")
 class MockDataTypeTest {

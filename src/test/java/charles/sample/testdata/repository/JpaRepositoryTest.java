@@ -1,11 +1,17 @@
 package charles.sample.testdata.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import charles.sample.testdata.domain.MockData;
 import charles.sample.testdata.domain.SchemaField;
 import charles.sample.testdata.domain.TableSchema;
 import charles.sample.testdata.domain.constant.MockDataType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.hibernate.exception.ConstraintViolationException;
@@ -21,13 +27,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("[Repository] JPA Repository Test")
 @ActiveProfiles("test")

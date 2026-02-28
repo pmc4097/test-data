@@ -1,7 +1,6 @@
 package charles.sample.testdata.dto.response;
 
 import charles.sample.testdata.dto.TableSchemaDto;
-
 import java.util.List;
 
 public record TableSchemaResponse(

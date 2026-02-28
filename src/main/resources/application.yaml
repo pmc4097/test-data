@@ -13,6 +13,12 @@ spring:
     properties:
       hibernate.format_sql: true
   sql.init.mode: always  #초가화 데이터 삽입
+  security.oauth2.client:
+    registration:
+      github:
+        client-id: ${GITHUB_CLIENT_ID}
+        client-secret: ${GITHUB_CLIENT_SECRET}
+
 
 debug: false
 logging:
