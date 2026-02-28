@@ -13,11 +13,17 @@ public record SchemaFieldRequest(
 
   public SchemaFieldDto toDto() {
     return SchemaFieldDto.of(
-        fieldName,
-        mockDataType,
-        fieldOrder,
-        blankPercent,
-        typeOptionJson,
-        forceValue);
+        fieldName, mockDataType, fieldOrder, blankPercent, typeOptionJson, forceValue);
+  }
+
+  public static SchemaFieldRequest of(
+      String fieldName,
+      MockDataType mockDataType,
+      Integer fieldOrder,
+      Integer blankPercent,
+      String typeOptionJson,
+      String forceValue) {
+    return new SchemaFieldRequest(
+        fieldName, mockDataType, fieldOrder, blankPercent, typeOptionJson, forceValue);
   }
 }
