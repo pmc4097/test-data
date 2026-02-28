@@ -15,4 +15,10 @@ public record TableSchemaRequest(
             .map(SchemaFieldRequest::toDto)
             .collect(java.util.stream.Collectors.toUnmodifiableSet()));
   }
+
+  public static TableSchemaRequest of(
+        String userId, String schemaName, List<SchemaFieldRequest> schemaFields
+  ) {
+    return new TableSchemaRequest(userId, schemaName, schemaFields);
+  }
 }

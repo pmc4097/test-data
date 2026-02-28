@@ -1,6 +1,11 @@
 package charles.sample.testdata.controller;
 
 import charles.sample.testdata.config.SecurityConfig;
+import charles.sample.testdata.domain.MockData;
+import charles.sample.testdata.domain.constant.MockDataType;
+import charles.sample.testdata.dto.request.SchemaFieldRequest;
+import charles.sample.testdata.dto.request.TableSchemaRequest;
+import charles.sample.testdata.util.FormDataEncoder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +15,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("[Controller] 테이블 스키마 컨트롤러 테스트")
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, FormDataEncoder.class})
 @WebMvcTest
-public record TableSchemaControllerTest(@Autowired MockMvc mvc) {
+public record TableSchemaControllerTest(
+    @Autowired MockMvc mvc, @Autowired FormDataEncoder endcoder) {
 
   @DisplayName("[GET] 테이블 스키마 페이지 -> 테이블 스키마 뷰 (정상)")
   @Test
@@ -36,11 +44,19 @@ public record TableSchemaControllerTest(@Autowired MockMvc mvc) {
   @Test
   void givenTableSchemaData_whenCreatingOrUpdating_thenRedirectsToTableSchemaView() throws Exception {
     // Given
-
+    TableSchemaRequest request =TableSchemaRequest.of(
+        "홍길동",
+        "test_schema",
+        List.of(
+                SchemaFieldRequest.of("id", MockDataType.ROW_NUMBER, 1, 0, null, null),
+                SchemaFieldRequest.of("name", MockDataType.STRING, 2, 10, null, null),
+                SchemaFieldRequest.of("age", MockDataType.NUMBER, 3, 20, null, null)
+        )
+    );
 
     // When && Then
     mvc.perform(post("/table-schema")
-                    .content("Sample data")
+                    .content(endcoder.encode(request))
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .with(csrf())
             )
