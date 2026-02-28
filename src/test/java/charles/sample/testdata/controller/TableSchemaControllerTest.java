@@ -3,7 +3,13 @@ package charles.sample.testdata.controller;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+
 
 import charles.sample.testdata.config.SecurityConfig;
 import charles.sample.testdata.domain.constant.MockDataType;
@@ -20,11 +26,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+
+
 @DisplayName("[Controller] 테이블 스키마 컨트롤러 테스트")
 @Import({SecurityConfig.class, FormDataEncoder.class})
 @WebMvcTest
-public record TableSchemaControllerTest(
-    @Autowired MockMvc mvc, @Autowired FormDataEncoder endcoder) {
+record TableSchemaControllerTest(
+    @Autowired MockMvc mvc, @Autowired FormDataEncoder encoder) {
 
   @DisplayName("[GET] 테이블 스키마 페이지 -> 테이블 스키마 뷰 (정상)")
   @Test
@@ -54,7 +62,7 @@ public record TableSchemaControllerTest(
 
     // When && Then
     mvc.perform(post("/table-schema")
-                    .content(endcoder.encode(request))
+                    .content(encoder.encode(request))
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .with(csrf())
             )
