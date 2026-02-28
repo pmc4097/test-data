@@ -3,6 +3,8 @@ package charles.sample.testdata.domain.constant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,21 +27,24 @@ public enum MockDataType {
   private final Set<String> requiredOptions;
   private final MockDataType baseType;
 
+  private static final List<MockDataTypeObject> objects =
+      Arrays.stream(MockDataType.values()).map(MockDataType::toObject).toList();
+
+  public static List<MockDataTypeObject> toObjects() {
+    return objects;
+  }
+
   public boolean isBaseType() {
     return baseType == null;
   }
 
   public MockDataTypeObject toObject() {
     return new MockDataTypeObject(
-            this.name(),
-            this.requiredOptions,
-            this.baseType == null ? null : MockDataType.valueOf(this.baseType.name()));
+        this.name(),
+        this.requiredOptions,
+        this.baseType == null ? null : MockDataType.valueOf(this.baseType.name()));
   }
 
   public record MockDataTypeObject(
-          String name,
-          Set<String> requiredOptions,
-          MockDataType baseType
-  ) {
-  }
+      String name, Set<String> requiredOptions, MockDataType baseType) {}
 }
