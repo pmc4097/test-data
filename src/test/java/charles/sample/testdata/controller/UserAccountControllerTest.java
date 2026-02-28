@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Disabled("테스트만 먼저 작성한 상태입니다. 구현 후 활성화할 예정입니다.")
+
 @DisplayName("[Controller] 회원 컨트롤러 테스트")
 @Import(SecurityConfig.class)
 @WebMvcTest
@@ -28,11 +28,10 @@ public record UserAccountControllerTest(@Autowired MockMvc mvc) {
     // Give
 
 
-    // When
+    // When && Then
     mvc.perform(get("/my-account"))
             .andExpect(status().isOk())
-            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("my-account"));
-    // Then
   }
 }
